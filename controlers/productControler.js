@@ -56,7 +56,7 @@ export function deleteProduct(req, res) {
         }).catch(
             () => {
                 res.json({
-                    message: "Product not deleted"
+                    message: " not deleted"
                 })
             })
 }
