@@ -1,4 +1,5 @@
 import Product from "../modules/product.js";
+import { isadmin } from "./userControler.js";
 
 export async function getProducts(req, res) {
 
@@ -17,6 +18,13 @@ export async function getProducts(req, res) {
 }
 
 export function createProduct(req, res) {
+
+    if (!isadmin(req)) {
+        res.json({
+            message: "Please login as admin to create product"
+        })
+        return
+    }
 
     console.log(req.user)
     if (req.user == null) {
@@ -39,10 +47,10 @@ export function createProduct(req, res) {
             res.json({
                 message: "Product created"
             })
-        }).catch(
+        }).catch(error)(
             () => {
                 res.json({
-                    message: "Product not created"
+                    message: error
                 })
             })
 }
