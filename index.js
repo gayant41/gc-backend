@@ -24,7 +24,7 @@ app.use((req, res, next) => {
     console.log(token);
 
     if (token != null) {
-        jwt.verify(token, "secret-key-7777", (error, decoded) => {
+        jwt.verify(token, process.env.SECRET_KEY, (error, decoded) => {
             if (!error) {
                 console.log(decoded);
                 req.user = decoded;

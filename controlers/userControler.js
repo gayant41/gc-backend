@@ -11,6 +11,20 @@ export function createUser(req, res) {
     const user = new User(newUserData)
     console.log(user)
 
+    if (req.user == null) {
+        res.json({
+            message: "Please login as admin"
+        })
+        return
+    }
+    if (req.user.type != "admin") {
+        res.json({
+            message: "Please login as admin"
+        })
+        return
+    }
+    //"email": "admin@example.com",
+    //"password": "securePassword123"
     user.save()
         .then(() => {
             res.json({
@@ -44,7 +58,7 @@ export function loginUser(req, res) {
                     isBlocked: user.isBlocked,
                     type: user.type,
                     profilePicture: user.profilePicture
-                }, "secret-key-7777")
+                }, process.env.SECRET_KEY)
                 res.json({
                     token: token,
                     message: "Password correct"
