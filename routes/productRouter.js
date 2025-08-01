@@ -1,8 +1,8 @@
 import express from "express";
-import { getProducts } from "../controlers/productControler.js";
+import { createProduct, getProducts } from "../controlers/productControler.js";
 
 const productRouter = express.Router();
 
 productRouter.get("/", getProducts);
-
+productRouter.post("/", createProduct);
 export default productRouter;

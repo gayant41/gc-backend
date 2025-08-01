@@ -36,10 +36,10 @@ const productSchema = mongoose.Schema({
         type: String,
         required: true
     }
+});
 
-
-})
-
-const Product = mongoose.model("product", productSchema);
-
+const Product = mongoose.model("products", productSchema);
 export default Product;
+
+
+

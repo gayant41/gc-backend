@@ -2,58 +2,63 @@ import Product from "../modules/product.js";
 import { isadmin } from "./userControler.js";
 
 export async function getProducts(req, res) {
-
-    try {
-        const productsList = await Product.find();
+    Product.find().then((products) => {
         res.json({
             message: "Products found",
-            list: productList
-        })
-    }
-    catch (error) {
-        res.json(error)
+            list: products
+        });
+    })
+    // try {
+    //     const productsList = await Product.find();
+    //     res.json({
+    //         message: "Products found",
+    //         list: productList
+    //     })
+    // }
+    // catch (error) {
+    //     res.json(error)
 
-    }
+    // }
 
 }
 
 export function createProduct(req, res) {
-
     if (!isadmin(req)) {
         res.json({
             message: "Please login as admin to create product"
-        })
-        return
+        });
+        return;
     }
 
-    console.log(req.user)
+    //console.log(req.user);
     if (req.user == null) {
         res.json({
             message: "User not logged in"
-        })
-        return
+        });
+        return;
     }
-    if (req.user.type != "admin") {
+    if (req.user.type !== "admin") {
         res.json({
             message: "User not admin"
-        })
-        return
+        });
+        return;
     }
 
-
     const product = new Product(req.body);
-    product.save().then(
-        () => {
+    product.save()
+        .then(() => {
             res.json({
                 message: "Product created"
-            })
-        }).catch(error)(
-            () => {
-                res.json({
-                    message: error
-                })
-            })
+            });
+        })
+        .catch(() => {
+            res.json({
+                //message: error.message
+                message: "Product not created"
+            });
+        });
 }
+
 
 export function deleteProduct(req, res) {
     Product.deleteOne({ name: req.params.name }).then(

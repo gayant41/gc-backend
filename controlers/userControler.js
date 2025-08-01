@@ -83,6 +83,7 @@ export function isadmin(req) {
 
         return false
     }
+    return true
 }
 
 export function iscustomer(req) {
@@ -94,4 +95,5 @@ export function iscustomer(req) {
 
         return false
     }
+    return true
 }
