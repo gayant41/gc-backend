@@ -30,7 +30,7 @@ export async function createOrder(req, res) {
         await newOrder.save();
         res.json({
             message: "Order created",
-            order: newOrder
+
         })
 
 
@@ -41,6 +41,18 @@ export async function createOrder(req, res) {
         })
 
     }
+}
 
-
+export async function getOrders(req, res) {
+    try {
+        const orders = await Order.find({ email: req.user.email });
+        res.json({
+            message: "Orders found",
+            list: orders
+        })
+    } catch (error) {
+        res.json({
+            message: error.message
+        })
+    }
 }
