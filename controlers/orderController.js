@@ -1,5 +1,6 @@
 import Order from "../modules/order.js";
 import { iscustomer } from "./userControler.js";
+import Product from "../modules/product.js";
 
 export async function createOrder(req, res) {
     if (!iscustomer(req)) {
@@ -24,19 +25,41 @@ export async function createOrder(req, res) {
         }
 
         const newOrderData = req.body;
+        const newProductArray = []
+
+        for (let i = 0; i < newOrderData.orderedItems.length; i++) {
+            const product = await Product.findOne({ productId: newOrderData.orderedItems[i].productId });
+
+            if (product == null) {
+                res.json({
+                    message: "Product not found"
+                })
+                return
+            }
+            newProductArray.push({
+                name: product.productName,
+                quantity: newOrderData.orderedItems[i].quantity,
+                price: product.price,
+                image: product.image
+            })
+        }
+        newOrderData.orderedItems = newProductArray
+
         newOrderData.orderId = orderId;
         newOrderData.email = req.user.email;
         const newOrder = new Order(newOrderData);
         await newOrder.save();
         res.json({
             message: "Order created",
-
         })
+
+
 
 
 
     } catch (error) {
         res.json({
+            message: "Error creating order",
             message: error.message
         })
 
