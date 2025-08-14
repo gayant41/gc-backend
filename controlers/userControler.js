@@ -61,7 +61,15 @@ export function loginUser(req, res) {
                 }, process.env.SECRET_KEY)
                 res.json({
                     token: token,
-                    message: "Password correct"
+                    message: "Password correct",
+                    user: {
+                        email: user.email,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        type: user.type,
+                        profilePicture: user.profilePicture
+
+                    }
 
                 })
             } else {
